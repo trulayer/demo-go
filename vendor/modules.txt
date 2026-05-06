@@ -1,0 +1,4 @@
+# github.com/trulayer/client-go v0.0.0 => ../client-go
+## explicit; go 1.22
+github.com/trulayer/client-go/trulayer
+# github.com/trulayer/client-go => ../client-go

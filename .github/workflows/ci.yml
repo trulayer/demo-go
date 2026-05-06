@@ -6,12 +6,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: demo-go
+      # The Go SDK is referenced via a `replace` directive at `../client-go`.
+      # Check it out next to demo-go so `go build` resolves the local module.
+      - uses: actions/checkout@v4
+        with:
+          repository: trulayer/client-go
+          path: client-go
       - uses: actions/setup-go@v5
         with:
           go-version: '1.22'
       - name: go build
+        working-directory: demo-go
         run: go build ./...
       - name: go test
+        working-directory: demo-go
         run: go test ./...
         env:
           TRULAYER_DRY_RUN: "true"

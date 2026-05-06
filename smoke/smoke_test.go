@@ -31,9 +31,16 @@ func TestExamplesBuildAndRun(t *testing.T) {
 			binPath := filepath.Join(tmp, name)
 			src := filepath.Join(repoRoot, "examples", name)
 
-			build := exec.Command("go", "build", "-o", binPath, ".")
+			// Use vendor mode when a vendor tree is present (demo-go
+			// vendors github.com/trulayer/client-go for CI). Falls back
+			// to module mode for local dev where the SDK is resolved
+			// via the `replace` directive at ../client-go.
+			modFlag := "-mod=mod"
+			if _, err := os.Stat(filepath.Join(repoRoot, "vendor", "modules.txt")); err == nil {
+				modFlag = "-mod=vendor"
+			}
+			build := exec.Command("go", "build", modFlag, "-o", binPath, ".")
 			build.Dir = src
-			build.Env = append(os.Environ(), "GOFLAGS=-mod=mod")
 			if out, err := build.CombinedOutput(); err != nil {
 				t.Fatalf("build %s: %v\n%s", name, err, out)
 			}

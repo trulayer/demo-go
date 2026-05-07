@@ -32,7 +32,7 @@ func main() {
 	defer trace.End(ctx)
 
 	resp, err := client.Messages.New(ctx, anthropic.MessageNewParams{
-		Model:     anthropic.ModelClaude3_5HaikuLatest,
+		Model:     anthropic.ModelClaudeHaiku4_5,
 		MaxTokens: 256,
 		Messages: []anthropic.MessageParam{
 			anthropic.NewUserMessage(anthropic.NewTextBlock("Why is the sky blue?")),

@@ -13,7 +13,7 @@ import (
 	"log"
 	"os"
 
-	openai "github.com/sashabaranov/go-openai"
+	"github.com/openai/openai-go"
 	instruments "github.com/trulayer/client-go/instruments/openai"
 	"github.com/trulayer/client-go/trulayer"
 )
@@ -23,17 +23,17 @@ func main() {
 	tl := trulayer.NewClient(os.Getenv("TRULAYER_API_KEY"))
 	defer func() { _ = tl.Shutdown(ctx) }()
 
-	oaiClient := openai.NewClient(os.Getenv("OPENAI_API_KEY"))
-	client := instruments.InstrumentOpenAI(oaiClient, tl)
+	oaiClient := openai.NewClient()
+	client := instruments.InstrumentOpenAI(&oaiClient, tl)
 
 	trace, ctx := tl.NewTrace(ctx, "openai-auto-example")
 	trace.SetInput("Why is the sky blue?")
 	defer trace.End(ctx)
 
-	resp, err := client.CreateChatCompletion(ctx, openai.ChatCompletionRequest{
-		Model: openai.GPT4oMini,
-		Messages: []openai.ChatCompletionMessage{
-			{Role: openai.ChatMessageRoleUser, Content: "Why is the sky blue?"},
+	resp, err := client.Chat.Completions.New(ctx, openai.ChatCompletionNewParams{
+		Model: openai.ChatModelGPT4oMini,
+		Messages: []openai.ChatCompletionMessageParamUnion{
+			openai.UserMessage("Why is the sky blue?"),
 		},
 	})
 	if err != nil {

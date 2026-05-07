@@ -37,7 +37,8 @@ TRULAYER_DRY_RUN=true go test ./smoke/
 | Directory | Shows |
 |-----------|-------|
 | `examples/basic_trace/` | Manual `NewTrace` + `NewSpan` with a real OpenAI call |
-| `examples/openai_auto/` | OpenAI auto-instrumentation wrapper |
+| `examples/openai_auto/` | OpenAI auto-instrumentation — wraps `github.com/openai/openai-go` |
+| `examples/anthropic_auto/` | Anthropic auto-instrumentation — wraps `github.com/anthropics/anthropic-sdk-go` |
 | `examples/rag_pipeline/` | Embed → retrieve → generate, three span types in one trace |
 | `examples/agent/` | Tool-calling agent loop, one span per tool + one per LLM turn |
 | `examples/feedback/` | Trace an answer and attach a thumbs-up feedback record |
@@ -46,6 +47,8 @@ Each example is a standalone `package main` and runs with:
 
 ```bash
 go run ./examples/basic_trace/
+go run ./examples/openai_auto/
+go run ./examples/anthropic_auto/
 go run ./examples/rag_pipeline/
 go run ./examples/agent/
 ```
@@ -70,7 +73,9 @@ demo-go/
 │   ├── basic_trace/
 │   │   └── main.go     # manual trace + span creation
 │   ├── openai_auto/
-│   │   └── main.go     # OpenAI auto-instrumentation
+│   │   └── main.go     # OpenAI auto-instrumentation (instruments/openai)
+│   ├── anthropic_auto/
+│   │   └── main.go     # Anthropic auto-instrumentation (instruments/anthropic)
 │   ├── rag_pipeline/
 │   │   └── main.go     # multi-span RAG pipeline
 │   ├── agent/

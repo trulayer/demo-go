@@ -14,6 +14,7 @@ func TestExamplesBuildAndRun(t *testing.T) {
 	examples := []string{
 		"basic_trace",
 		"openai_auto",
+		"anthropic_auto",
 		"rag_pipeline",
 		"agent",
 		"feedback",

@@ -1,0 +1,22 @@
+name: golangci-lint
+# PR-only. only-new-issues=true => diff-aware: gates only on issues in the PR diff,
+# so pre-existing lint debt does not block the intro PR or unrelated future PRs.
+on: pull_request
+
+permissions:
+  contents: read
+
+jobs:
+  golangci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version: stable
+      - uses: golangci/golangci-lint-action@v9
+        with:
+          version: v2.12.2
+          only-new-issues: true
